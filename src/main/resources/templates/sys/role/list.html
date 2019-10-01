@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/2005/Atom" xmlns:v-bind="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>AdminLTE 2 | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" th:href="@{../components/bootstrap/dist/css/bootstrap.min.css}"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{../components/font-awesome/css/font-awesome.min.css}"/>
+    <!-- Ionicons -->
+    <link rel="stylesheet" th:href="@{../components/Ionicons/css/ionicons.min.css}"/>
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{../dist/css/AdminLTE.min.css}"/>
+    <!-- Bootstrap treeview -->
+    <link rel="stylesheet" th:href="@{../plugins/boostrap-treeview/bootstrap-treeview.min.css}"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <style type="text/css">
+        a{cursor: pointer;}
+    </style>
+</head>
+<body class="hold-transition">
+    <div class="row"  id="app" >
+       <div class="col-xs-12">
+           <div class="box  box-primary">
+               <div class="box-header with-border">
+                   <h3 class="box-title" style="font-size: 15px;">系统角色列表</h3>
+                   <div class="box-tools pull-right"></div>
+               </div>
+               <div class="box-body no-padding">
+                  <div class="mailbox-controls" style="border-bottom: 1px solid #f4f4f4;padding: 10px 15px;">
+                      <div class="form-inline down text-center">
+                          <div class="form-group">
+                              <!--<label for="name">角色名称</label>-->
+                              <input type="text" class="form-control input-sm"  v-model="params.name"  placeholder="请输入角色名称" style="min-width: 250px;">
+                          </div>
+                          <button type="button" class="btn btn-default btn-sm" style="width: 100px;" @click="search()"><i class="fa fa-search"></i> 搜索 </button>
+                          <button type="button" class="btn btn-default btn-sm btn-success" style="width: 100px;"  @click="addInfo()"><i class="fa fa-edit"></i> 添加角色 </button>
+                      </div>
+                  </div>
+                  <div class="table-responsive mailbox-messages">
+                      <table class="table table-hover table-striped">
+                          <thead>
+                          <tr>
+                             <!-- <th>角色ID</th>-->
+                              <th>角色名称</th>
+                              <th>角色描述</th>
+                              <th>创建时间</th>
+                              <th>操作</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr v-for="role in pageInfo.list">
+                             <!-- <td>{{role.id}}</td>-->
+                              <td>{{role.name}}</td>
+                              <td>{{role.remark}}</td>
+                              <td>{{role .createDate | formatDate}}</td>
+                              <td>
+                                  <a  @click="editInfo(role)">编辑</a>
+                                  <span>|</span>
+                                  <a @click="del(role.id)">删除</a>
+                                  <span>|</span>
+                                  <a @click="editPermissionInfo(role)">资源授权</a>
+                              </td>
+                          </tr>
+
+                          </tbody>
+                      </table>
+                  </div>
+               </div>
+               <div class="box-footer">
+                   <div class="mailbox-controls">
+                       <div class="mailbox-controls">
+                           <div class="pull-right page-box row" style="padding: 10px 20px">
+                               <div style="float: left;line-height: 30px;">
+                                   共有<span>{{pageInfo.total}}</span>条，<span>{{pageInfo.pages}}</span>页[每页<span>{{pageInfo.pageSize}}</span>条]
+                               </div>
+                               <ul class="pagination" style="margin: 0 0 0 10px;">
+                                   <li @click="pageData(pageInfo.firstPage)"><a>«</a></li>
+                                   <li @click="pageData(pageInfo.prePage)"><a>‹</a></li>
+                                   <li @click="pageData(page)"  v-bind:class="{active:page == pageInfo.pageNum}" v-for="page in  pageInfo.navigatepageNums"><a>{{page}}</a></li>
+                                   <li @click="pageData(pageInfo.nextPage)"><a>›</a></li>
+                                   <li @click="pageData(pageInfo.lastPage)"><a>»</a></li>
+                               </ul>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+
+    </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">编辑角色信息 </h4>
+                </div>
+                <div class="modal-body row">
+                    <form class="form-horizontal" id="fm" action="#">
+                        <input type="hidden"  id="id" name="id" v-model="RoleInfo.id">
+                        <div class="form-group">
+                            <label  class="col-sm-3 control-label" for="name">角色名称:</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" id="name" name="name"  v-model="RoleInfo.name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label    for="remark" class="control-label col-sm-3">备注:</label>
+                            <div class="col-sm-6">
+                                 <textarea class="form-control" id="remark" name="remark" v-model="RoleInfo.remark"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="min-width: 80px;" onclick="myreset()" >关闭</button>
+                    <button type="button" class="btn btn-primary" id="editButton"  style="min-width: 80px;">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- 资源授权弹窗 -->
+    <div class="modal fade" id="permissionModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×
+                    </button>
+                    <h4 class="modal-title">资源授权 </h4>
+                </div>
+                <div class="modal-body row">
+                    <div id="tree"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="min-width: 80px;" >关闭</button>
+                    <button type="button" class="btn btn-primary" id="permisssionButton"  style="min-width: 80px;">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+<!-- jQuery 3 -->
+<script th:src="@{../components/jquery/dist/jquery.min.js}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script th:src="@{../components/bootstrap/dist/js/bootstrap.min.js}"></script>
+<!-- bootstrapValidator -->
+<script th:src="@{../plugins/validator/bootstrapValidator.js}"></script>
+<!-- BootstrapTreeview -->
+<script th:src="@{../plugins/boostrap-treeview/bootstrap-treeview.min.js}"></script>
+<!-- Vue.js -->
+<script th:src="@{../js/tools/Vue.min.js}"></script>
+<!-- loadData.js -->
+<script  th:src="@{../js/loadData.js}"></script>
+<!-- serialize.js -->
+<script th:src="@{../js/tools/serialize.js}"></script>
+<!-- alertInfo.js -->
+<script  th:src="@{../js/tools/alertInfo.js}"></script>
+<!-- date -->
+<script th:src="@{../js/tools/date.js}"></script>
+<!-- load.js -->
+<script  th:src="@{../js/role/load.js}"></script>
+<!-- edit.js -->
+<script  th:src="@{../js/role/edit.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form action="" method="post" name="myform">
+    <input type="hidden" id="userId" name="userId" value="${userId}">
+    <input type="hidden" id="openid" name="openid" value="${openid}">
+    <input type="hidden" id="deviceId" name="deviceId" value="nullvalue">
+</form>
+<div class="box bg">
+    <!-- 轮播图 -->
+    <div class="flexslider">
+        <ul class="slides">
+            <li><a><img src="<%=path %>/img/guoman/new/tit3.png" onclick="javaScript:location.href='https://l.sh.189.cn/gmkfwx'"/></a></li>
+            <li><a><img src="<%=path %>/img/guoman/new/tit.jpg" onclick="goGMFlow()"/></a></li>
+        </ul>
+    </div>
+    <div class="xian2"></div>
+    <!-- 主体 -->
+    <div class="bg-div ">
+        <h3 class="h3 f24 c2">国际及港澳台地区漫游业务使用功能开通状态</h3>
+        <div class="sheb f24" style=" margin-bottom: -20px;" >
+            <div class="shebl" style="text-align: center;" >
+                <label class="c3 f26">设备号</label>
+                <c:choose>
+                    <c:when test="${devildType ne '1' or userType eq '1'}">
+                        <input type="hidden" id="devId" value="${devId}">
+                        ${fn:replace(devId, fn:substring(devId, 3, 7), '****') }
+                    </c:when>
+                    <c:otherwise>
+                        <select class="sel"  id="devId" onchange="selectDeviceId()">
+                            <c:forEach items="${lstResult }" var="l">
+                                <c:choose>
+                                    <c:when test="${l.Serialnum eq devId}">
+                                        <option value="${l.Serialnum}" selected="selected">
+                                            ${fn:replace(l.Serialnum, fn:substring(l.Serialnum, 3, 7), '****') }
+                                        </option>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="${l.Serialnum}">
+                                            ${fn:replace(l.Serialnum, fn:substring(l.Serialnum, 3, 7), '****') }
+                                        </option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </select>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+            <div class="t-c c2 p-tb"  id="msg">
+                <%-- ${SerialnumMap.deviceTypeCD} -- ${SerialnumMap.ywstatus} --%>
+                <c:choose>
+                    <c:when test="${devildType eq '1' }">
+                        <!-- 手机设备 -->
+                        <c:if test="${userType eq '0' }">
+                            <!-- 政企 -->
+                            <c:if test="${SerialnumMap.deviceTypeCD eq '466' }">
+                                <c:if test="${SerialnumMap.ywstatus eq '4' }">
+                                    <p>您还没有开通国际及港澳台地区漫游业务。</p>
+                                </c:if>
+                                <c:if test="${SerialnumMap.ywstatus eq '5' }">
+                                    <p>您已开通国际及港澳台地区语音漫游业务。</p>
+                                </c:if>
+                            </c:if>
+                            <c:if test="${SerialnumMap.deviceTypeCD ne '466' }">
+                                <c:if test="${SerialnumMap.ywstatus eq '1' }">
+                                    <p>您已开通国际及港澳台地区漫游业务。</p>
+                                </c:if>
+                                <c:if test="${SerialnumMap.ywstatus eq '2' }">
+                                    <p>您还没有开通国际及港澳台地区漫游业务<br/><span class="shebr"><a href="javascript:yewushouli()" >点击免费开通</a></span></p>
+                                </c:if>
+                                <c:if test="${SerialnumMap.ywstatus eq '3' }">
+                                    <p>您已开通国际及港澳台地区语音漫游业务<br/><span class="shebr"><a href="javascript:yewushouli()" >点击免费开通数据业务</a></span></p>
+                                </c:if>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${userType eq '1' }">
+                            <!-- 非政企 -->
+                            <c:if test="${SerialnumMap.deviceTypeCD eq '466' }">
+                                <c:if test="${SerialnumMap.ywstatus eq '4' }">
+                                    <p>您还没有开通国际及港澳台地区漫游业务。</p>
+                                </c:if>
+                                <c:if test="${SerialnumMap.ywstatus eq '5' }">
+                                    <p>您已开通国际及港澳台地区语音漫游业务。</p>
+                                </c:if>
+                            </c:if>
+                            <c:if test="${SerialnumMap.deviceTypeCD ne '466' }">
+                                <c:if test="${SerialnumMap.ywstatus eq '1' }">
+                                    <p>您已开通国际及港澳台地区漫游业务。</p>
+                                </c:if>
+                                <c:if test="${SerialnumMap.ywstatus eq '2' }">
+                                    <p>您还没有开通国际及港澳台地区漫游业务，</p>
+                                </c:if>
+                                <c:if test="${SerialnumMap.ywstatus eq '3' }">
+                                    <p>您已开通国际及港澳台地区语音漫游业务<br/>还没有开通数据业务。</p>
+                                </c:if>
+                            </c:if>
+                        </c:if>
+                    </c:when>
+                    <c:otherwise>
+                        <!-- 非手机设备 -->
+                        <p>如需查看开通状态，请使用手机设备关联微信。<p>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+		 </div>
+        <!-- 按钮点击 -->
+        <div class="xian2"></div>
+        <div class="main flex flex2 flex-b">
+            <div onclick="yewushouli()">
+                <div class="change">
+                    <img src="<%=path %>/img/guoman/zhongqiu/change.png" />
+                </div>
+                <img src="<%=path %>/img/guoman/zhongqiu/ct1.png" />
+                <p>业务受理</p>
+                <p class="mainp">开通境外漫游功能<br />境外使用语音和数据上网</p>
+            </div>
+            <div onclick="zifeichaxun()">
+                <img src="<%=path %>/img/guoman/zhongqiu/ct2.png" />
+                <p>咨费查询</p>
+                <p class="mainp">查看境外漫游资费<br />语音及数据上网等标准资费</p>
+            </div>
+            <div onclick="bohaozhushou()">
+                <div class="degn">
+                    <img src="<%=path %>/img/guoman/zhongqiu/degn.png" />
+                </div>
+                <img src="<%=path %>/img/guoman/zhongqiu/ct3.png" />
+                <p>拨号助手</p>
+                <p class="mainp">模拟境外通讯环境<br />教您如何在境外拨打电话</p>
+            </div>
+            <div onclick="chujingzijian()">
+                <div class="yutu">
+                    <img src="<%=path %>/img/guoman/zhongqiu/yutu.png" />
+                </div>
+                <img src="<%=path %>/img/guoman/zhongqiu/ct4.png" />
+                <p>出境前自检</p>
+                <p class="mainp">检测手机及手机卡<br />是否支持境外语音及数据上网</p>
+            </div>
+            <div onclick="manyouzhinan()">
+                <div class="yutu2">
+                    <img src="<%=path %>/img/guoman/zhongqiu/yutu2.png" />
+                </div>
+                <img src="<%=path %>/img/guoman/zhongqiu/ct5.png" />
+                <p>漫游指南</p>
+            </div>
+            <div onclick="paizhangzhiyin()">
+                <img src="<%=path %>/img/guoman/zhongqiu/ct6.png" />
+                <p>排障指引</p>
+            </div>
+        </div>
+        <div class="fot">
+            <img src="<%=path %>/img/guoman/zhongqiu/fot.png" />
+        </div>
+
+     </div>
+</div>
+
+<div class="pellets fixedwidth" id="alertpage1">
+    <div class="meng"></div>
+    <div class="tcon">
+        <div class="xx x"></div>
+        <section class="tcon-con">
+            <h1>温馨提醒</h1>
+            <section class="tcon-conp">
+                <p>你选择的设备异常，请换个设备重试！</p>
+            </section>
+            <section class="btn">
+                <div class="btns btn1 x">
+                    <p>返 回</p>
+                </div>
+                <div class="btns btn1 x">
+                    <p>确 认</p>
+                </div>
+            </section>
+        </section>
+    </div>
+</div>
+
+<div class="pellets fixedwidth" id="alertpage2">
+    <div class="meng"></div>
+    <div class="tcon">
+        <section class="tcon-con">
+            <section class="tcon-conp t-l">
+                <p style="color: #ff0000;">订购说明：</p>
+                <p style="padding: 4px 5% 0% 10px;">订购后向国际及港澳台地区流量包，需先开通国际及港澳台地区漫游业务使用功能。</p>
+            </section>
+            <section class="btn">
+                <div class="btns btn1" style="width: 43%;font-size: 16px;">
+                    <p onclick="javaScript:location.href='https://chong.qq.com/promote/mobile/wx/mojo_app_1528362976333.html'">确认已开通</p>
+                </div>
+                <div class="btns btn1 x" style="width: 43%;font-size: 16px;">
+                    <p>还未开通</p>
+                </div>
+            </section>
+        </section>
+    </div>
+</div>
+
+</body>
+</html>

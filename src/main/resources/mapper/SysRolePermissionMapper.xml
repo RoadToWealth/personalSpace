@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hzc.com.mapper.SysRolePermissionMapper">
+  <resultMap id="BaseResultMap" type="hzc.com.model.SysRolePermission">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sys_role_id" jdbcType="INTEGER" property="sysRoleId" />
+    <result column="sys_permission_id" jdbcType="INTEGER" property="sysPermissionId" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sys_role_id, sys_permission_id, create_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_role_permission
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_role_permission
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="hzc.com.model.SysRolePermission">
+    insert into sys_role_permission (id, sys_role_id, sys_permission_id, 
+      create_date)
+    values (#{id,jdbcType=INTEGER}, #{sysRoleId,jdbcType=INTEGER}, #{sysPermissionId,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="hzc.com.model.SysRolePermission">
+    insert into sys_role_permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sysRoleId != null">
+        sys_role_id,
+      </if>
+      <if test="sysPermissionId != null">
+        sys_permission_id,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sysRoleId != null">
+        #{sysRoleId,jdbcType=INTEGER},
+      </if>
+      <if test="sysPermissionId != null">
+        #{sysPermissionId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="hzc.com.model.SysRolePermission">
+    update sys_role_permission
+    <set>
+      <if test="sysRoleId != null">
+        sys_role_id = #{sysRoleId,jdbcType=INTEGER},
+      </if>
+      <if test="sysPermissionId != null">
+        sys_permission_id = #{sysPermissionId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="hzc.com.model.SysRolePermission">
+    update sys_role_permission
+    set sys_role_id = #{sysRoleId,jdbcType=INTEGER},
+      sys_permission_id = #{sysPermissionId,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

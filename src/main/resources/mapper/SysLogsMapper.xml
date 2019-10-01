@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hzc.com.mapper.SysLogsMapper">
+  <resultMap id="BaseResultMap" type="hzc.com.model.SysLogs">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="http_url" jdbcType="VARCHAR" property="httpUrl" />
+    <result column="http_method" jdbcType="VARCHAR" property="httpMethod" />
+    <result column="ip" jdbcType="VARCHAR" property="ip" />
+    <result column="params" jdbcType="VARCHAR" property="params" />
+    <result column="class_method" jdbcType="VARCHAR" property="classMethod" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, http_url, http_method, ip, params, class_method, create_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_logs
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_logs
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="hzc.com.model.SysLogs">
+    insert into sys_logs ( http_url, http_method,
+      ip, params, class_method, 
+      create_date)
+    values ( #{httpUrl,jdbcType=VARCHAR}, #{httpMethod,jdbcType=VARCHAR},
+      #{ip,jdbcType=VARCHAR}, #{params,jdbcType=VARCHAR}, #{classMethod,jdbcType=VARCHAR}, 
+      sysdate())
+  </insert>
+  <insert id="insertSelective" parameterType="hzc.com.model.SysLogs">
+    insert into sys_logs
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="httpUrl != null">
+        http_url,
+      </if>
+      <if test="httpMethod != null">
+        http_method,
+      </if>
+      <if test="ip != null">
+        ip,
+      </if>
+      <if test="params != null">
+        params,
+      </if>
+      <if test="classMethod != null">
+        class_method,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="httpUrl != null">
+        #{httpUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="httpMethod != null">
+        #{httpMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null">
+        #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="classMethod != null">
+        #{classMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="hzc.com.model.SysLogs">
+    update sys_logs
+    <set>
+      <if test="httpUrl != null">
+        http_url = #{httpUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="httpMethod != null">
+        http_method = #{httpMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null">
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="params != null">
+        params = #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="classMethod != null">
+        class_method = #{classMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="hzc.com.model.SysLogs">
+    update sys_logs
+    set http_url = #{httpUrl,jdbcType=VARCHAR},
+      http_method = #{httpMethod,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      params = #{params,jdbcType=VARCHAR},
+      class_method = #{classMethod,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+</mapper>

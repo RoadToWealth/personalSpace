@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/2005/Atom" xmlns:v-bind="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type"content="text/html;charset=UTF-8"/>
+    <title>AdminLTE 2 | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" th:href="@{../../components/bootstrap/dist/css/bootstrap.min.css}"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{../../components/font-awesome/css/font-awesome.min.css}"/>
+    <!-- Ionicons -->
+    <link rel="stylesheet" th:href="@{../../components/Ionicons/css/ionicons.min.css}"/>
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{../../dist/css/AdminLTE.min.css}"/>
+    <!-- bootstrapValidator -->
+    <link rel="stylesheet" th:href="@{../../plugins/validator/bootstrapValidator.css}"/>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+</head>
+<body class="hold-transition">
+    <div class="row"  id="app" >
+       <div class="col-xs-12">
+           <div class="box  box-primary">
+               <div class="box-header with-border">
+                   <h3 class="box-title" style="font-size: 15px;">系统用户添加</h3>
+                   <div class="box-tools pull-right"></div>
+               </div>
+               <div class="box-body">
+                   <div class="container">
+                       <form class="form-horizontal" id="fm" action="#">
+                           <input type="hidden" class="form-control" id="id" name="id" v-model="params.id">
+                           <div class="form-group">
+                               <label for="userName" class="control-label">用户名:</label>
+                               <input type="text" class="form-control" id="userName" name="userName" v-model="params.userName">
+                           </div>
+                           <div class="form-group">
+                               <label for="userCode" class="control-label">登录账号:</label>
+                               <input type="text" class="form-control" id="userCode" name="userCode" v-model="params.userCode" readonly="readonly">
+                           </div>
+                           <div class="form-group">
+                               <label for="gender" class="control-label">性别:</label>
+                               <select class="form-control" id="gender"  name="gender" v-model="params.gender">
+                                   <option value="0">男</option>
+                                   <option value="1">女</option>
+                               </select>
+                           </div>
+                           <div class="form-group">
+                               <label for="email" class="control-label">Email:</label>
+                               <input type="text" class="form-control" id="email" name="email" v-model="params.email">
+                           </div>
+                           <div class="form-group">
+                               <label for="phone" class="control-label">电话:</label>
+                               <input type="text" class="form-control" id="phone" name="phone" maxlength="11" v-model="params.phone">
+                           </div>
+                           <div class="form-group">
+                               <label for="address" class="control-label">地址:</label>
+                               <textarea class="form-control" id="address" name="address" v-model="params.address"></textarea>
+                           </div>
+                           <div class="form-group">
+                               <label for="note" class="control-label">备注:</label>
+                               <textarea class="form-control" id="note" name="note" v-model="params.note"></textarea>
+                           </div>
+                       </form>
+                   </div>
+               </div>
+               <div class="box-footer text-right">
+                   <button type="button" class="btn btn-default btn-sm btn-success" style="width: 100px;" onclick="parent.vm.switchpage('user/index')">取消</button>
+                   <button type="button" class="btn btn-default btn-sm btn-warning" style="width: 100px;" id="editButton" >确认</button>
+               </div>
+           </div>
+       </div>
+    </div>
+
+
+<!-- jQuery 3 -->
+<script th:src="@{../../components/jquery/dist/jquery.min.js}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script th:src="@{../../components/bootstrap/dist/js/bootstrap.min.js}"></script>
+<!-- bootstrapValidator -->
+ <script th:src="@{../../plugins/validator/bootstrapValidator.js}"></script>
+<!-- Vue.js -->
+<script th:src="@{../../js/tools/Vue.min.js}"></script>
+<!-- serialize.js -->
+<script th:src="@{../../js/tools/serialize.js}"></script>
+<!-- alertInfo.js -->
+<script th:src="@{../../js/tools/alertInfo.js}"></script>
+<!-- add.js -->
+<script th:src="@{../../js/user/add.js}"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    var vm=new Vue({
+        el: "#app",
+        data: {
+            params:{"gender":0}
+        }
+    });
+    var user = [[${user}]];
+    vm.params=user;
+</script>
+
+</body>
+</html>
