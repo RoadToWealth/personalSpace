@@ -1,0 +1,54 @@
+server:
+     port: 8080
+     servlet:
+         context-path: /blog
+
+#thymeleaf
+#spring.thymeleaf.prefix:classpath:/templates
+#pring.thymeleaf.suffix:.html
+spring:
+    datasource:
+       url: jdbc:mysql://127.0.0.1:3306/personalSpace?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8
+       username: personalSpace
+       password: personalSpace
+       driver-class-name: com.mysql.cj.jdbc.Driver
+       type: com.alibaba.druid.pool.DruidDataSource
+    jpa:
+       hibernate:
+          ddl-auto: create
+          dialect: org.hibernate.dialect.MySQL5Dialect
+          show-sql: true
+#thymeleaf
+    #thymeleaf:
+      # mode: LEGACYHTML5
+       #encoding: UTF-8
+       #content-type: text/html
+       #cache: false
+#mybatis
+    mybatis:
+        typeAliasesPackage: hzc.com.mapper
+        mapperLocations: classpath:mapper/*.xml
+#jsp js
+    devtools:
+        restart:
+          enabled: true
+
+#\u037C
+#spring.resources.static-locations:classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
+
+
+#springboot
+#mybatis.configuration.mapUnderscoreToCamelCase:true
+
+
+#
+pagehelper:
+      helper-dialect: mysql
+      reasonable: true
+      support-methods-arguments: true
+      params:
+        count: countSql
+
+logging:
+   level.hzc.com.mapper: debug
+
