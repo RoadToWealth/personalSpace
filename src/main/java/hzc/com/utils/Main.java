@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * @Auther: HZC
  * @Date: 2018/7/6 14:47
- * @Description:
+ * @Description: 手动输入测试代码
  */
 public class Main {
     public static void main(String[] args) {
